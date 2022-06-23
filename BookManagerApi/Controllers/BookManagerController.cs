@@ -50,10 +50,12 @@ namespace BookManagerApi.Controllers
         // POST: api/v1/book
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<Book> AddBook(Book book)
+        public ActionResult AddBook(Book book)
         {
-            _bookManagementService.Create(book);
-            return CreatedAtAction(nameof(GetBookById), new { id = book.Id }, book);
+            if(_bookManagementService.Create(book)) //
+                return CreatedAtAction(nameof(GetBookById), new { id = book.Id }, book);
+            else
+                return ValidationProblem(detail: $"Id {book.Id} already exists", statusCode: 400); 
         }
     }
 }
