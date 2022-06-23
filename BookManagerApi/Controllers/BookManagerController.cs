@@ -30,6 +30,14 @@ namespace BookManagerApi.Controllers
             return book;
         }
 
+        // DELETE: api/v1/book/5
+        [HttpDelete("{id}")]
+        public ActionResult<bool> DeleteBookById(long id)
+        {
+            return _bookManagementService.DeleteBook(id);
+          
+        }
+
         // PUT: api/v1/book/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
