@@ -26,8 +26,11 @@ namespace BookManagerApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<Book> GetBookById(long id)
         {
-            var book = _bookManagementService.FindBookById(id);
-            return book;
+            Book? book = _bookManagementService.FindBookById(id);
+            if (book == null)
+                return NotFound();
+            else
+                return book;
         }
 
         // DELETE: api/v1/book/5
@@ -50,7 +53,7 @@ namespace BookManagerApi.Controllers
         // POST: api/v1/book
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult AddBook(Book book)
+        public ActionResult<Book> AddBook(Book book)
         {
             if(_bookManagementService.Create(book)) //
                 return CreatedAtAction(nameof(GetBookById), new { id = book.Id }, book);
