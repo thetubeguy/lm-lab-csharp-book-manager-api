@@ -35,10 +35,13 @@ namespace BookManagerApi.Controllers
 
         // DELETE: api/v1/book/5
         [HttpDelete("{id}")]
-        public ActionResult<bool> DeleteBookById(long id)
+        public ActionResult<string> DeleteBookById(long id)
         {
-            return _bookManagementService.DeleteBook(id);
-          
+            if(_bookManagementService.DeleteBook(id))
+                return $"Book with Id:{id} deleted";
+            else
+
+                return NotFound();
         }
 
         // PUT: api/v1/book/5
