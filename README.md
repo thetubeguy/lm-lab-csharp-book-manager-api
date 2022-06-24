@@ -23,29 +23,27 @@ This is the starter repository for the Further APIs session. It provides some st
 
 `dotnet test`
 
-### Tasks
+### End Points
 
-Here are some tasks for you to work on:
+- GET: api/v1/book
+  Returns all books in the DB
+  
+- GET: /api/v1/book/{id}
+  Returns the book with Id if it exists.
+  Otherwise returns a NotFoundResult with status 404
 
-📘 Discussion Task
+- DELETE: /api/v1/book/{id}
+  Returns a string confirming the deletion if the book with Id exists.
+  Otherwise returns a NotFoundResult with status 404
 
-Explore the code and make notes on the following features and how it is being implemented in the code. We'd like you to note down what classes and methods are used and how the objects interact.
+- PUT: /api/v1/book/{id}
+  Changes the details of book with matching Id.  Book details are in request body.
+  Returns a NoContentResult.
+  
+- POST: /api/v1/book
+  Adds a new book to the database.   Book details are in request body.
+  Returns a CreatedAtAction result (pointing to the new book) if successful.
+  Other wise returns an ActionResult with Status 400 and ValidationProblemDetails stating that Id already exists
+  
 
-The features are:
-- Get All Books
-- Get a Book by ID
-- Add a Book
-- Update a Book
-
-📘 Task 1: Implement the following User Story with tests.
-
-`User Story: As a user, I want to use the Book Manager API to delete a book using its ID`
-
-
-📘 Extension Task: Oh no! 😭 We've only covered the happy paths in the solution, can you figure out a way
-to add in exception handling to the project? 
-
-- Clue 1: What if someone wants to add a book with an ID for a book that already exists? How do we handle this gracefully?
-
-- Clue 2: What if someone wants to find a book by an ID that doesn't yet exist? 
-  How can we improve the API by handling errors gracefully and show a helpful message to the client?
+  
