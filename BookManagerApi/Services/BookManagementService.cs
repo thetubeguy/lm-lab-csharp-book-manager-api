@@ -1,4 +1,5 @@
 ﻿using BookManagerApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookManagerApi.Services
 {
@@ -13,21 +14,12 @@ namespace BookManagerApi.Services
 
 
         public List<Book> GetAllBooks()
-        {
-            var books = _context.Books.ToList();
-            return books;
+        {        
+            List<Book> _books = _context.Books.ToList();
+            return _books;
         }
 
-        public bool Create(Book book)
-        {
-            if (!BookExists(book.Id))
-            {
-                _context.Add(book);
-                _context.SaveChanges();
-                return true;
-            }
-            else return false;
-        }
+
 
         public Book Update(long id, Book book)
         {
@@ -61,10 +53,7 @@ namespace BookManagerApi.Services
             else return false;
         }
 
-        public bool BookExists(long id)
-        {
-            return _context.Books.Any(b => b.Id == id);
-        }
+ 
     }
 }
 

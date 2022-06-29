@@ -6,10 +6,8 @@ namespace BookManagerApi.Services
 	public interface IBookManagementService
 	{
         List<Book> GetAllBooks();
-        bool Create(Book book);
         Book Update(long id, Book book);
-        Book? FindBookById(long id);
-        bool BookExists(long id);
+        Book FindBookById(long id);
         bool DeleteBook(long id);
     }
 }

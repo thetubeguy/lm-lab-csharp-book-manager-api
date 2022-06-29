@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddScoped<IBookManagementService, BookManagementService>();
+builder.Services.AddScoped<IGenericManagementService<Book>, GenericManagementService<Book>>();
+//builder.Services.AddScoped<IGenericManagementService<Author>, GenericManagementService<Author>>();
 builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("BookManagerApi");
 if (builder.Environment.EnvironmentName == "Testing")

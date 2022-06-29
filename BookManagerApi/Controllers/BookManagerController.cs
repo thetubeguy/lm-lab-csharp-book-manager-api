@@ -9,10 +9,14 @@ namespace BookManagerApi.Controllers
     public class BookManagerController : ControllerBase
     {
         private readonly IBookManagementService _bookManagementService;
+        private readonly IGenericManagementService<Book> _genericManagementServiceBook;
+       
 
-        public BookManagerController(IBookManagementService bookManagementService)
+        public BookManagerController(IBookManagementService bookManagementService, IGenericManagementService<Book> genericManagementServiceBook)
         {
             _bookManagementService = bookManagementService;
+            _genericManagementServiceBook = genericManagementServiceBook;
+            
         }
 
         // GET: api/v1/book
@@ -58,7 +62,7 @@ namespace BookManagerApi.Controllers
         [HttpPost]
         public ActionResult<Book> AddBook(Book book)
         {
-            if(_bookManagementService.Create(book)) //
+            if(_genericManagementServiceBook.Create(book)) //
                 return CreatedAtAction(nameof(GetBookById), new { id = book.Id }, book);
             else
                 return ValidationProblem(detail: $"Id {book.Id} already exists", statusCode: 400); 
