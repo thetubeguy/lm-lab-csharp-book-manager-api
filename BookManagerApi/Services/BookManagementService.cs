@@ -27,7 +27,6 @@ namespace BookManagerApi.Services
 
             existingBookFound.Title = book.Title;
             existingBookFound.Description = book.Description;
-            existingBookFound.Author = book.Author;
             existingBookFound.Genre = book.Genre;
 
             _context.SaveChanges();

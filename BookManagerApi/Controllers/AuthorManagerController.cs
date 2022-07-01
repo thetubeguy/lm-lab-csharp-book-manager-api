@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using BookManagerApi.Models;
+using BookManagerApi.Services;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookManagerApi.Controllers
@@ -8,36 +9,65 @@ namespace BookManagerApi.Controllers
     [ApiController]
     public class AuthorManagerController : ControllerBase
     {
+        private readonly IAuthorManagementService _authorManagementService;
+        private readonly IGenericManagementService<Author> _genericManagementServiceauthor;
+
+
+        public AuthorManagerController(IAuthorManagementService authorManagementService, IGenericManagementService<Author> genericManagementServiceauthor)
+        {
+            _authorManagementService = authorManagementService;
+            _genericManagementServiceauthor = genericManagementServiceauthor;
+
+        }
+
         // GET: api/v1/author
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<IEnumerable<Author>> Getauthors()
         {
-            return new string[] { "value1", "value2" };
+            return _authorManagementService.GetAllAuthors();
         }
 
-        // GET api/v1/author/5
+        // GET: api/v1/author/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Author> GetauthorById(long id)
         {
-            return "value";
+            Author? author = _authorManagementService.FindAuthorById(id);
+            if (author == null)
+                return NotFound();
+            else
+                return author;
         }
 
-        // POST api/v1/author
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/v1/author/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/v1/author/5
+        // DELETE: api/v1/author/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<string> DeleteauthorById(long id)
         {
+            if (_authorManagementService.DeleteAuthor(id))
+                return $"author with Id:{id} deleted";
+            else
+
+                return NotFound();
+        }
+
+        // PUT: api/v1/author/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public IActionResult UpdateauthorById(long id, Author author)
+        {
+            _authorManagementService.Update(id, author);
+            return NoContent();
+        }
+
+        // POST: api/v1/author
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public ActionResult<Author> Addauthor(Author author)
+        {
+            if (_genericManagementServiceauthor.Create(author)) //
+                return CreatedAtAction(nameof(GetauthorById), new { id = author.Id }, author);
+            else
+                return ValidationProblem(detail: $"Id {author.Id} already exists", statusCode: 400);
         }
     }
 }
+
